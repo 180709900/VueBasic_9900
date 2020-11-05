@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+    <div id ="app">
+        <h2>Tebak Angka !</h2>
+        <span v-if="kesempatan = 0">
+            <input type="number" v-model="userInput" disabled>
+            Kesempatan Anda sudah habis
+            <button @click ="ulangPermainan">Main Lagi</button>
+        </span>
+        <span v-else>
+            <input type="number" v-model="userInput">
+            <button @click ="cekAngka">Tebak</button>
+           
+        </span>
+        
+
+
+        <footer>
+            <p>{{profil.nama}} | {{profil.npm}} | {{profil.kelas}}</p>
+        </footer>
+    </div>
+    
+
+</body>
+
+<script>
+    new Vue({
+        el : "#app",
+        data :{
+            profil :{
+                nama : "Andreas",
+                npm : "180709900",
+                kelas : "PAW E"
+            },
+            userInput : 0,
+            kesempatan : 3,
+            random : Math.floor(Math.random() *(10-1+1))+1,
+        },
+        methods :{
+            cekAngka(){
+                if(this.userInput=this.random){
+                    this.kesempatan=3;
+                    this.userInput=this.userInput;
+                }
+                else{
+                    this.kesempatan--;
+                    this.userInput=this.userInput;
+                }
+            },
+        
+            
+        },
+    });
+</script>
+
+</html>
