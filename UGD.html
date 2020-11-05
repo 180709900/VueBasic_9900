@@ -5,23 +5,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="vue.js"></script>
+    <style>
+        footer{
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: gray;
+            color: white;
+            text-align: center;
+        }
+        .content{
+            margin-top: 200px;
+            margin-left: 530px;
+            width: 300px;
+            height: 200px;
+            background-color: white;
+            text-align: center;
+        }
+    </style>
 </head>
-<body>
+<body style="background-color: aqua;">
     <div id ="app">
-        <h2>Tebak Angka !</h2>
-        <span v-if="kesempatan = 0">
-            <input type="number" v-model="userInput" disabled>
-            Kesempatan Anda sudah habis
-            <button @click ="ulangPermainan">Main Lagi</button>
-        </span>
-        <span v-else>
-            <input type="number" v-model="userInput">
-            <button @click ="cekAngka">Tebak</button>
-           
-        </span>
+        <div class="content">
+            <h2>Tebak Angka!</h2>
+            <p v-if="status=='berhasil'">
+                <input type="number" disabled>
+                <button disabled>Tebak</button>
+                <br>
+                <br>
+                Anda Berhasil Menebak
+                <br>
+                <br>
+                <button @click="mainLagi">Main Lagi</button>
+            </p>
+            <p v-else-if="status==''">
+                <input type="number" v-model="userInput" placeholder="Masukkan Angka 1-10">
+                <button @click="cekAngka">Tebak</button>
+            </p>
+            <p v-else-if="status=='habis'">
+                <input type="number" disabled>
+                <button disabled>Tebak</button>
+                <br>
+                <br>
+                Anda Kehabisan kesempatan
+                <br>
+                <br>
+                <button @click="mainLagi">Main Lagi</button>
+            </p>
+            <p v-else>
+                <input type="number" disabled>
+                <button disabled>Tebak</button>
+                <br><br>
+                Kesempatan Anda : {{kesempatan}}
+                <button @click="cobaLagi">Coba Lagi</button>
+            </p>
+        </div>
         
-
-
+       
         <footer>
             <p>{{profil.nama}} | {{profil.npm}} | {{profil.kelas}}</p>
         </footer>
@@ -33,30 +74,55 @@
 <script>
     new Vue({
         el : "#app",
-        data :{
-            profil :{
-                nama : "Andreas",
-                npm : "180709900",
-                kelas : "PAW E"
+        data: {
+                userInput: null,
+                randomNumber:  Math.floor(Math.random() * (10 - 1 + 1)) + 1,
+                status : "",
+                kesempatan: 3,
+                profil:{
+                    nama :"Andreas",
+                    npm:"180709900",
+                    kelas:"PAW E"
+                }
             },
-            userInput : 0,
-            kesempatan : 3,
-            random : Math.floor(Math.random() *(10-1+1))+1,
-        },
-        methods :{
-            cekAngka(){
-                if(this.userInput=this.random){
+            methods: {
+                cekAngka(){
+                    console.log(this.randomNumber)
+                    this.status="";
+                    if(this.userInput==this.randomNumber)
+                    {
+                        this.status = "berhasil";
+                        this.randomNumber=Math.floor(Math.random() * (10 - 1 + 1)) + 1;
+                    }
+                    else
+                    {
+                        if(this.kesempatan!=1)
+                        {
+                            this.status="fail";
+                            this.kesempatan--;
+                        }
+                        else
+                        {
+                            this.status="habis";
+                        }
+                        
+                    }
+                },
+                mainLagi(){
                     this.kesempatan=3;
-                    this.userInput=this.userInput;
+                    this.salah=undefined;
+                    this.benar=undefined;
+                    this.randomNumber=Math.floor(Math.random() * (10 - 1 + 1)) + 1;
+                    this.userInput=null;
+                    this.status="";
+                },
+                cobaLagi(){
+                    this.status="";
+                    this.userInput=null;
                 }
-                else{
-                    this.kesempatan--;
-                    this.userInput=this.userInput;
-                }
+            
             },
         
-            
-        },
     });
 </script>
 
