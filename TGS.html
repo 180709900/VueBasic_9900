@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="vue.js"></script>
+    <style>
+        footer{
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            color: black;
+            text-align: center;
+        }
+       
+        
+    </style>
+</head>
+<body style="background-color: aquamarine;">
+    <div id="app">
+        <h2 style="text-align: center;">To Do List</h2>
+        <div class="container">
+            <ul v-for="list in lists" :key="index">
+                <li>{{list.kepentingan}}</li>
+                <li>{{list.nama}}</li>
+                <li>{{list.note}}</li>
+                <button @click="deleteToDo(list)">Hapus</button>
+            </ul>
+            
+        
+        <form @submit.prevent="addList">
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Apa yang mau kamu kerjakan?</label>
+              <input v-model="kegiatan" class="form-control" id="exampleFormControlInput1" >
+            </div>
+            <div class="form-group">
+              <label for="exampleFormControlSelect1">Penting Gak?</label>
+              <select v-model="penting" class="form-control" id="exampleFormControlSelect1">
+                <option>Penting</option>
+                <option>Biasa</option>
+                <option>Tidak Penting</option>
+                
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="exampleFormControlTextarea1">Ada Catatan Penting?</label>
+              <textarea v-model="catatan" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary mb-2">Submit</button>
+            <button @click="reset" class="btn btn-primary mb-2">Reset</button>
+          </form>
+        </div>
+        <footer>
+            <p>{{profil.nama}} | {{profil.npm}} | {{profil.kelas}}</p>
+        </footer>
+    </div>
+</body>
+<script>
+    new Vue({
+        el : "#app",
+        data:{
+            kegiatan: "",
+            penting:"",
+            catatan:"",
+            lists:[],
+            profil:{
+                nama:"Andreas",
+                npm:"180709900",
+                kelas:"PAW E"
+            }
+        },
+        methods:{
+            addList(){
+                this.lists.push({
+                    nama :this.kegiatan,
+                    kepentingan:this.penting,
+                    note : this.catatan
+                });
+                this.catatan="";
+                this.kegiatan="";
+                this.penting="";
+            },
+            reset(e){
+                this.catatan="";
+                this.kegiatan="";
+                this.penting="";
+                e.preventDefault();
+            },
+            deleteToDo(list){
+                const todoIndex = this.lists.indexOf(list);
+                this.lists.splice(todoIndex, 1);
+            }
+        },
+    });
+</script>
+
+</html>
